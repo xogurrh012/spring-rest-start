@@ -9,22 +9,13 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-// 인가 필터
+// 인가 필터 (로그인하는 필터 아님!! -> 인가 필터)
 public class JwtAuthorizationFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
-        System.out.println("~~~~~~~~~~~~~~~~~~~~~~JwtAuthorizationFilte~~~~~~~~~~~~~~~~~~~~~~~");
+        filterChain.doFilter(request, response);
 
-        // localhost:8080/good?username=ssar&password=1234
-        String username = request.getParameter("username");
-        String password = request.getParameter("password");
-
-        if (username.equals("ssar") && password.equals("1234")) {
-            filterChain.doFilter(request, response);
-        } else {
-            response.getWriter().println("get out");
-        }
     }
 }
