@@ -14,11 +14,25 @@ public class JwtUtil {
 
     // JWT 토큰 생성
     public static String create(User user) {
-        return null;
+        String accessToken = JWT.create()
+                .withSubject(user.getUsername())
+                .withExpiresAt(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
+                .withClaim("id", user.getId())
+                .withClaim("roles", user.getRoles())
+                .sign(Algorithm.HMAC512(SECRET));
+        return accessToken;
     }
 
     // JWT 토큰 검증 및 디코딩
     public static User verify(String jwt) {
-        return null;
+        DecodedJWT decodedJWT = JWT.require(Algorithm.HMAC512(SECRET))
+                .build()
+                .verify(jwt); // 토큰 검증
+
+        Integer id = decodedJWT.getClaim("id").asInt();
+        String username = decodedJWT.getSubject();
+        String roles = decodedJWT.getClaim("roles").asString();
+
+        return User.builder().id(id).username(username).roles(roles).build();
     }
 }

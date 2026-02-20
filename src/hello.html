@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <form id="joinForm">
+      <input type="text" id="username" placeholder="username 입력" /> <br />
+      <input type="text" id="password" placeholder="password 입력" /> <br />
+      <input type="text" id="email" placeholder="email 입력" /> <br />
+      <button type="button" onclick="join()">회원가입</button>
+    </form>
+
+    <script>
+      async function join() {
+        // 1. document.querySelector로 id 찾아서 값 가져오기
+        let username = document.querySelector("#username").value;
+        let password = document.querySelector("#password").value;
+        let email = document.querySelector("#email").value;
+
+        // 2. JSON 객체로 변환
+        let user = {
+          username: username,
+          password: password,
+          email: email,
+        };
+
+        const response = await fetch("http://localhost:8080/join", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(user),
+        });
+
+        const result = await response.json();
+        console.log("응답 데이터:", result);
+      }
+    </script>
+  </body>
+</html>
